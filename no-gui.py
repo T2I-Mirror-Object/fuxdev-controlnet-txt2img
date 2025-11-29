@@ -32,7 +32,7 @@ pipe = FluxPipeline.from_pretrained(
 # Enable CUDA optimizations
 pipe.enable_model_cpu_offload()
 
-# 4. Generate Image using the CLI argument
+# 4. Generate Image
 print(f"Generating image for prompt: '{args.prompt}'")
 
 image = pipe(
@@ -45,11 +45,15 @@ image = pipe(
     generator=torch.Generator("cpu").manual_seed(0)
 ).images[0]
 
-# 5. Save with Timestamp
-timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-# Clean the filename slightly to avoid filesystem errors if prompt is huge
-safe_name = "flux_gen" 
-filename = f"{safe_name}_{timestamp}.png"
+# 5. Save to 'results' folder
+output_dir = "results"
+os.makedirs(output_dir, exist_ok=True)  # Creates the folder if it doesn't exist
 
-image.save(filename)
-print(f"Success! Image saved to: {filename}")
+timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+filename = f"flux_gen_{timestamp}.png"
+
+# Combine folder and filename safely (works on Windows and Linux)
+file_path = os.path.join(output_dir, filename)
+
+image.save(file_path)
+print(f"Success! Image saved to: {file_path}")
