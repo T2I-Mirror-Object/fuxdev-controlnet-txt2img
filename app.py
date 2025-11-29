@@ -4,7 +4,7 @@ import logging
 from http import HTTPStatus
 from typing import Any, Dict, Optional
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 from werkzeug.exceptions import BadRequest
 
 from src.inference import ControlNetConfig, FluxGenerator, pil_to_base64
@@ -19,6 +19,16 @@ def create_app() -> Flask:
     @app.get("/health")
     def health() -> Any:
         return {"status": "ok"}
+
+    @app.get("/")
+    def index() -> Any:
+        """Serve the academic-styled playground UI."""
+        presets = sorted(FluxGenerator.CONTROLNET_MODELS.keys())
+        return render_template(
+            "index.html",
+            controlnet_presets=presets,
+            flux_version=FluxGenerator.MODEL_ID,
+        )
 
     @app.post("/api/generate")
     def generate() -> Any:
