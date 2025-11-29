@@ -2,7 +2,9 @@
 
 This document explains how to run the Flask inference server that wraps the
 `black-forest-labs/FLUX.1-dev` Diffusers pipeline and how to exercise the HTTP
-API for text-to-image generation with optional ControlNet conditioning.
+API for text-to-image generation with optional ControlNet conditioning. For a
+deeper dive into the architecture and operational tips, see `docs/architecture.md`
+and `docs/operations.md`.
 
 ## Prerequisites
 - Python 3.10 or newer
