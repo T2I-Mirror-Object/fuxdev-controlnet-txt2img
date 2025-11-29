@@ -1,795 +1,876 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Scholarly Image Notebook</title>
-    <style>
-      :root {
-        font-size: 16px;
-        --bg-top: #130b1a;
-        --bg-bottom: #2b1f32;
-        --card: rgba(32, 26, 43, 0.9);
-        --card-accent: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(129, 140, 248, 0.2));
-        --border: rgba(250, 249, 246, 0.18);
-        --text: #fdf7f0;
-        --muted: #cbbad6;
-        --accent: #f5c97c;
-        --accent-dark: #f59e0b;
-        --shadow: 0 40px 60px rgba(10, 7, 15, 0.65);
-        --radius: 18px;
-      }
-      *, *::before, *::after {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--text);
-        background: radial-gradient(circle at 20% 25%, rgba(215, 180, 255, 0.18), transparent 45%),
-          radial-gradient(circle at 80% 10%, rgba(252, 211, 77, 0.15), transparent 40%),
-          linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-      }
-      body::after {
-        content: "";
-        position: fixed;
-        inset: -40% 0;
-        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-        background-size: 120px 120px;
-        opacity: 0.6;
-        z-index: -1;
-      }
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background: rgba(19, 11, 26, 0.9);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(245, 201, 124, 0.2);
-        box-shadow: 0 20px 40px rgba(7, 3, 12, 0.8);
-      }
-      .top-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1rem clamp(1rem, 4vw, 2.5rem);
-        gap: 1rem;
-      }
-      .app-title {
-        display: flex;
-        flex-direction: column;
-      }
-      .app-title span {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.45em;
-        color: rgba(245, 201, 124, 0.8);
-      }
-      .app-title h1 {
-        margin: 0.1rem 0 0;
-        font-family: "Cormorant Garamond", "Playfair Display", serif;
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: 600;
-        color: #fff9ed;
-      }
-      .header-actions {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-      }
-      .ghost-btn {
-        border: 1px solid rgba(252, 211, 77, 0.4);
-        background: rgba(32, 23, 41, 0.7);
-        color: var(--muted);
-        font-size: 0.85rem;
-        padding: 0.4rem 0.9rem;
-        border-radius: 999px;
-        cursor: pointer;
-        transition: color 0.2s ease, border 0.2s ease, background 0.2s ease, transform 0.2s ease;
-      }
-      .ghost-btn:hover {
-        color: var(--text);
-        border-color: rgba(245, 201, 124, 0.8);
-        background: rgba(245, 201, 124, 0.15);
-        transform: translateY(-1px);
-      }
-      main {
-        padding: clamp(1.3rem, 4vw, 3.5rem);
-        max-width: 1280px;
-        margin: 0 auto;
-      }
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Group 08 - Computer Vision</title>
+  <style>
+    :root {
+      font-size: 16px;
+      --bg-top: #130b1a;
+      --bg-bottom: #2b1f32;
+      --card: rgba(32, 26, 43, 0.9);
+      --card-accent: linear-gradient(135deg, rgba(250, 204, 21, 0.25), rgba(129, 140, 248, 0.2));
+      --border: rgba(250, 249, 246, 0.18);
+      --text: #fdf7f0;
+      --muted: #cbbad6;
+      --accent: #f5c97c;
+      --accent-dark: #f59e0b;
+      --shadow: 0 40px 60px rgba(10, 7, 15, 0.65);
+      --radius: 18px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 20% 25%, rgba(215, 180, 255, 0.18), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(252, 211, 77, 0.15), transparent 40%),
+        linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -40% 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 120px 120px;
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(19, 11, 26, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(245, 201, 124, 0.2);
+      box-shadow: 0 20px 40px rgba(7, 3, 12, 0.8);
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem clamp(1rem, 4vw, 2.5rem);
+      gap: 1rem;
+    }
+
+    .app-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-title span {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.45em;
+      color: rgba(245, 201, 124, 0.8);
+    }
+
+    .app-title h1 {
+      margin: 0.1rem 0 0;
+      font-family: "Cormorant Garamond", "Playfair Display", serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 600;
+      color: #fff9ed;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .ghost-btn {
+      border: 1px solid rgba(252, 211, 77, 0.4);
+      background: rgba(32, 23, 41, 0.7);
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: color 0.2s ease, border 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .ghost-btn:hover {
+      color: var(--text);
+      border-color: rgba(245, 201, 124, 0.8);
+      background: rgba(245, 201, 124, 0.15);
+      transform: translateY(-1px);
+    }
+
+    main {
+      padding: clamp(1.3rem, 4vw, 3.5rem);
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(360px, 1.15fr) minmax(320px, 0.85fr);
+      gap: clamp(1.25rem, 3vw, 2.5rem);
+      align-items: stretch;
+    }
+
+    @media (max-width: 1024px) {
       .layout {
-        display: grid;
-        grid-template-columns: minmax(360px, 1.15fr) minmax(320px, 0.85fr);
-        gap: clamp(1.25rem, 3vw, 2.5rem);
-        align-items: stretch;
+        grid-template-columns: 1fr;
       }
-      @media (max-width: 1024px) {
-        .layout {
-          grid-template-columns: 1fr;
-        }
-      }
-      .panel {
-        position: relative;
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        padding: clamp(1.4rem, 3vw, 2.4rem);
-        backdrop-filter: blur(25px);
-        overflow: hidden;
-      }
-      .panel.setup-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-      }
-      .panel.results-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 1.4rem;
-      }
-      .panel::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: var(--card-accent);
-        opacity: 0.35;
-        pointer-events: none;
-        mix-blend-mode: screen;
-      }
-      .panel > * {
-        position: relative;
-        z-index: 1;
-      }
-      .panel h2 {
-        margin: 0 0 1rem;
-        font-size: 1.2rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #e2e8f0;
-      }
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-      }
-      label {
-        font-size: 0.85rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.3rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-      .helper {
-        font-size: 0.8rem;
-        color: var(--muted);
-        margin-top: 0.35rem;
-        line-height: 1.4;
-      }
-      textarea,
-      input,
-      select {
-        width: 100%;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 12px;
-        padding: 0.9rem 1rem;
-        font-size: 1rem;
-        background: rgba(23, 18, 34, 0.82);
-        color: var(--text);
-        transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-      }
-      textarea:focus,
-      input:focus,
-      select:focus {
-        outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 2px rgba(245, 201, 124, 0.4);
-        background: rgba(13, 9, 23, 0.95);
-      }
-      textarea {
-        min-height: 120px;
-        resize: vertical;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      }
-      .grid-2 {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    }
+
+    .panel {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(1.4rem, 3vw, 2.4rem);
+      backdrop-filter: blur(25px);
+      overflow: hidden;
+    }
+
+    .panel.setup-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .panel.results-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--card-accent);
+      opacity: 0.35;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .panel>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel h2 {
+      margin: 0 0 1rem;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e2e8f0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .helper {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      line-height: 1.4;
+    }
+
+    textarea,
+    input,
+    select {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      font-size: 1rem;
+      background: rgba(23, 18, 34, 0.82);
+      color: var(--text);
+      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(245, 201, 124, 0.4);
+      background: rgba(13, 9, 23, 0.95);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 640px) {
+
+      .grid-2,
       .grid-3 {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: 1fr;
       }
-      @media (max-width: 640px) {
-        .grid-2,
-        .grid-3 {
-          grid-template-columns: 1fr;
-        }
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 0.95rem 1.6rem;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .primary-btn {
+      background: linear-gradient(120deg, var(--accent), #a78bfa);
+      color: #2b122d;
+      align-self: flex-start;
+      box-shadow: 0 15px 35px rgba(240, 171, 69, 0.45);
+      font-weight: 600;
+    }
+
+    .primary-btn:hover:not(:disabled) {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .status-chip {
+      font-size: 0.74rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 201, 124, 0.35);
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(30, 19, 37, 0.8);
+    }
+
+    .status-chip[data-state="busy"] {
+      color: var(--accent-dark);
+      border-color: rgba(37, 99, 235, 0.3);
+    }
+
+    .status-chip[data-state="error"] {
+      color: #b91c1c;
+      border-color: rgba(185, 28, 28, 0.3);
+    }
+
+    .result-panel .result-card {
+      flex: 1;
+    }
+
+    .result-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(14, 10, 20, 0.92);
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .result-figure {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at 40% 30%, rgba(236, 189, 102, 0.35), rgba(48, 33, 74, 0.95));
+      min-height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 80px rgba(104, 89, 152, 0.35);
+    }
+
+    #result-image {
+      width: 100%;
+      display: none;
+      border-radius: inherit;
+      object-fit: contain;
+    }
+
+    .placeholder {
+      color: var(--muted);
+      text-align: center;
+      padding: 2rem;
+      line-height: 1.5;
+      max-width: 320px;
+    }
+
+    .loader {
+      display: none;
+      gap: 0.25rem;
+      align-items: center;
+      color: var(--muted);
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(19, 13, 31, 0.92);
+      border: 1px solid rgba(245, 201, 124, 0.25);
+      box-shadow: var(--shadow);
+    }
+
+    .loader span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1s infinite ease-in-out;
+    }
+
+    .loader span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .loader span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.5;
       }
-      button {
-        font-size: 1rem;
-        padding: 0.95rem 1.6rem;
-        border-radius: 12px;
-        border: none;
-        cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-      }
-      .primary-btn {
-        background: linear-gradient(120deg, var(--accent), #a78bfa);
-        color: #2b122d;
-        align-self: flex-start;
-        box-shadow: 0 15px 35px rgba(240, 171, 69, 0.45);
-        font-weight: 600;
-      }
-      .primary-btn:hover:not(:disabled) {
-        background: var(--accent-dark);
-        transform: translateY(-1px);
-      }
-      .primary-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        box-shadow: none;
-      }
-      .results-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 1.2rem;
-      }
-      .status-chip {
-        font-size: 0.74rem;
-        padding: 0.3rem 0.9rem;
-        border-radius: 999px;
-        border: 1px solid rgba(245, 201, 124, 0.35);
-        color: var(--muted);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        background: rgba(30, 19, 37, 0.8);
-      }
-      .status-chip[data-state="busy"] {
-        color: var(--accent-dark);
-        border-color: rgba(37, 99, 235, 0.3);
-      }
-      .status-chip[data-state="error"] {
-        color: #b91c1c;
-        border-color: rgba(185, 28, 28, 0.3);
-      }
-      .result-panel .result-card {
-        flex: 1;
-      }
-      .result-card {
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        background: rgba(14, 10, 20, 0.92);
-        padding: 1.6rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-        box-shadow: var(--shadow);
-      }
-      .result-figure {
-        position: relative;
-        border-radius: 18px;
-        overflow: hidden;
-        background: radial-gradient(circle at 40% 30%, rgba(236, 189, 102, 0.35), rgba(48, 33, 74, 0.95));
-        min-height: 340px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: inset 0 0 80px rgba(104, 89, 152, 0.35);
-      }
-      #result-image {
-        width: 100%;
-        display: none;
-        border-radius: inherit;
-        object-fit: contain;
-      }
-      .placeholder {
-        color: var(--muted);
-        text-align: center;
-        padding: 2rem;
-        line-height: 1.5;
-        max-width: 320px;
-      }
-      .loader {
-        display: none;
-        gap: 0.25rem;
-        align-items: center;
-        color: var(--muted);
-        position: absolute;
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 0.45rem 0.9rem;
-        border-radius: 999px;
-        background: rgba(19, 13, 31, 0.92);
-        border: 1px solid rgba(245, 201, 124, 0.25);
-        box-shadow: var(--shadow);
-      }
-      .loader span {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--accent);
-        animation: pulse 1s infinite ease-in-out;
-      }
-      .loader span:nth-child(2) {
-        animation-delay: 0.15s;
-      }
-      .loader span:nth-child(3) {
-        animation-delay: 0.3s;
-      }
-      @keyframes pulse {
-        0%, 100% {
-          transform: translateY(0);
-          opacity: 0.5;
-        }
-        50% {
-          transform: translateY(-4px);
-          opacity: 1;
-        }
-      }
-      .loader small {
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-      .metadata {
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding-top: 1rem;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 0.75rem;
-        font-size: 0.82rem;
-      }
-      .metadata span {
-        display: block;
-        color: var(--muted);
-      }
-      .metadata strong {
-        display: block;
-        color: var(--text);
-        font-size: 0.92rem;
-        margin-top: 0.1rem;
-      }
-      .history {
-        margin-top: 1.5rem;
-      }
-      .history-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-      }
-      .history-toggle-btn {
-        width: 100%;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        background: rgba(39, 26, 49, 0.8);
-        color: var(--text);
-        padding: 0.75rem 1rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-      }
-      .history-toggle-btn:hover {
-        border-color: rgba(245, 201, 124, 0.5);
-        background: rgba(55, 29, 68, 0.9);
-      }
-      .history-grid {
-        margin-top: 0.8rem;
-        display: grid;
-        gap: 0.8rem;
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      }
-      .history-grid[data-collapsed="true"] {
-        display: none;
-      }
-      .history-item {
-        padding: 0;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 16px;
-        overflow: hidden;
-        background: rgba(30, 18, 39, 0.82);
-        cursor: pointer;
-        transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
-        position: relative;
-        padding-top: 100%;
-      }
-      .history-item img {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .history-item:hover {
-        transform: translateY(-2px);
-        border-color: rgba(245, 201, 124, 0.8);
-        box-shadow: 0 12px 24px rgba(245, 201, 124, 0.35);
-      }
-      .history-item.active {
-        border-color: var(--accent);
-        box-shadow: 0 12px 30px rgba(167, 139, 250, 0.4);
-      }
-      .notes-drawer {
-        position: fixed;
-        top: 0;
-        right: -360px;
-        width: 330px;
-        height: 100vh;
-        background: rgba(31, 16, 34, 0.96);
-        border-left: 1px solid rgba(245, 201, 124, 0.35);
-        box-shadow: var(--shadow);
-        padding: 1.8rem;
-        transition: right 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 1.1rem;
-        z-index: 20;
-        backdrop-filter: blur(20px);
-      }
-      .notes-drawer.open {
-        right: 0;
-      }
-      .notes-drawer h3 {
-        margin: 0;
-        font-size: 1.2rem;
-        font-family: "Cormorant Garamond", serif;
-        letter-spacing: 0.08em;
-      }
-      .notes-drawer ul {
-        margin: 0;
-        padding-left: 1.2rem;
-        color: var(--muted);
-        line-height: 1.5;
-        font-size: 0.95rem;
-      }
-      .notes-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(12, 8, 18, 0.7);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease;
-        z-index: 15;
-      }
-      .notes-overlay.open {
+
+      50% {
+        transform: translateY(-4px);
         opacity: 1;
-        visibility: visible;
       }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="top-bar">
-        <div class="app-title">
-          <span>Flux Imaging Lab</span>
-          <h1>Scholarly Image Notebook</h1>
-        </div>
-        <div class="header-actions">
-          <button class="ghost-btn" type="button" data-action="docs">Docs</button>
-          <button class="ghost-btn" type="button" data-action="about">About model</button>
-          <button class="ghost-btn" type="button" id="notes-toggle">Notes</button>
-          <button class="ghost-btn" type="button" data-action="settings">Settings</button>
-        </div>
+    }
+
+    .loader small {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .metadata {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      font-size: 0.82rem;
+    }
+
+    .metadata span {
+      display: block;
+      color: var(--muted);
+    }
+
+    .metadata strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.92rem;
+      margin-top: 0.1rem;
+    }
+
+    .history {
+      margin-top: 1.5rem;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .history-toggle-btn {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      background: rgba(39, 26, 49, 0.8);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .history-toggle-btn:hover {
+      border-color: rgba(245, 201, 124, 0.5);
+      background: rgba(55, 29, 68, 0.9);
+    }
+
+    .history-grid {
+      margin-top: 0.8rem;
+      display: grid;
+      gap: 0.8rem;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+
+    .history-grid[data-collapsed="true"] {
+      display: none;
+    }
+
+    .history-item {
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(30, 18, 39, 0.82);
+      cursor: pointer;
+      transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      padding-top: 100%;
+    }
+
+    .history-item img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .history-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(245, 201, 124, 0.8);
+      box-shadow: 0 12px 24px rgba(245, 201, 124, 0.35);
+    }
+
+    .history-item.active {
+      border-color: var(--accent);
+      box-shadow: 0 12px 30px rgba(167, 139, 250, 0.4);
+    }
+
+    .notes-drawer {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 330px;
+      height: 100vh;
+      background: rgba(31, 16, 34, 0.96);
+      border-left: 1px solid rgba(245, 201, 124, 0.35);
+      box-shadow: var(--shadow);
+      padding: 1.8rem;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      z-index: 20;
+      backdrop-filter: blur(20px);
+    }
+
+    .notes-drawer.open {
+      right: 0;
+    }
+
+    .notes-drawer h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-family: "Cormorant Garamond", serif;
+      letter-spacing: 0.08em;
+    }
+
+    .notes-drawer ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .notes-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 8, 18, 0.7);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 15;
+    }
+
+    .notes-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="top-bar">
+      <div class="app-title">
+        <span>Group 08</span>
+        <h1>Baseline Model: FLUX.1-dev</h1>
       </div>
-    </header>
-
-    <main>
-      <div class="layout">
-        <section class="panel setup-panel">
-          <h2>Experiment setup</h2>
-          <form id="generate-form">
-            <div>
-              <label for="prompt">Primary prompt</label>
-              <textarea id="prompt" name="prompt" required placeholder="Describe the hypothesis you want to explore..."></textarea>
-              <p class="helper">Detail lighting, materials, and references for reproducible renders.</p>
-            </div>
-            <div>
-              <label for="negative_prompt">Negative prompt (optional)</label>
-              <textarea id="negative_prompt" name="negative_prompt" placeholder="artifacts, blurry, watermark..."></textarea>
-            </div>
-            <div>
-              <label>Dimensions</label>
-              <div class="grid-2">
-                <div>
-                  <input id="width" name="width" type="number" min="256" max="1024" step="32" value="512" aria-label="Width" />
-                  <p class="helper">px width</p>
-                </div>
-                <div>
-                  <input id="height" name="height" type="number" min="256" max="1024" step="32" value="512" aria-label="Height" />
-                  <p class="helper">px height</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label>Sampling</label>
-              <div class="grid-3">
-                <div>
-                  <input id="steps" name="steps" type="number" min="4" max="50" value="28" aria-label="Steps" />
-                  <p class="helper">More steps → finer detail.</p>
-                </div>
-                <div>
-                  <input id="guidance" name="guidance" type="number" min="0" max="15" step="0.1" value="3.5" aria-label="Guidance" />
-                  <p class="helper">Higher → more literal.</p>
-                </div>
-                <div>
-                  <input id="seed" name="seed" type="number" min="0" placeholder="random" aria-label="Seed" />
-                  <p class="helper">Optional reproducibility.</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="controlnet">ControlNet preset</label>
-              <select id="controlnet" name="controlnet">
-                <option value="">None</option>
-                {% for preset in controlnet_presets %}
-                <option value="{{ preset }}">{{ preset.title() }}</option>
-                {% endfor %}
-              </select>
-              <p class="helper">Pair prompts with structure such as canny edges or depth.</p>
-            </div>
-            <div id="controlnet-upload" style="display: none">
-              <label for="controlnet-image">Control image</label>
-              <input id="controlnet-image" type="file" accept="image/*" />
-              <p class="helper">Upload a reference matching your composition.</p>
-            </div>
-            <button id="generate-btn" class="primary-btn" type="submit">Generate image</button>
-          </form>
-        </section>
-
-        <section class="panel results-panel">
-          <div class="results-header">
-            <h2>Results</h2>
-            <div class="status-chip" id="status" data-state="idle">Idle</div>
-          </div>
-          <div class="result-card">
-            <div class="result-figure">
-              <img id="result-image" alt="Generated result" />
-              <div class="placeholder" id="placeholder-text">
-                Awaiting your first render. Submit a prompt to begin documenting observations.
-              </div>
-              <div class="loader" id="loader">
-                <span></span>
-                <span></span>
-                <span></span>
-                <small>Generating image…</small>
-              </div>
-            </div>
-            <div class="metadata" id="metadata"></div>
-          </div>
-
-          <div class="history">
-            <button class="history-toggle-btn" id="history-toggle" type="button">
-              <span style="font-weight:600;color:var(--text);font-size:1rem;">History</span>
-              <span id="history-arrow" aria-hidden="true">▾</span>
-            </button>
-            <div class="history-grid" id="history-grid" data-collapsed="false"></div>
-          </div>
-        </section>
+      <div class="header-actions">
+        <button class="ghost-btn" type="button" data-action="docs">Docs</button>
+        <button class="ghost-btn" type="button" data-action="about">About model</button>
+        <button class="ghost-btn" type="button" id="notes-toggle">Notes</button>
+        <button class="ghost-btn" type="button" data-action="settings">Settings</button>
       </div>
-    </main>
+    </div>
+  </header>
 
-    <aside class="notes-drawer" id="notes-drawer">
-      <h3>Laboratory notes</h3>
-      <p class="helper">Use these heuristics to keep experiments reproducible.</p>
-      <ul>
-        <li>Steps: more steps produce sharper images but take longer.</li>
-        <li>Guidance scale: higher values adhere closely to text; lower values allow abstraction.</li>
-        <li>ControlNet: combine prompts with canny or depth priors for structural fidelity.</li>
-        <li>Seeds: capture seeds in lab notes for deterministic reruns.</li>
-      </ul>
-      <button class="primary-btn" type="button" id="notes-close">Close notes</button>
-    </aside>
-    <div class="notes-overlay" id="notes-overlay"></div>
+  <main>
+    <div class="layout">
+      <section class="panel setup-panel">
+        <h2>Experiment setup</h2>
+        <form id="generate-form">
+          <div>
+            <label for="prompt">Primary prompt</label>
+            <textarea id="prompt" name="prompt" required
+              placeholder="Describe the hypothesis you want to explore..."></textarea>
+            <p class="helper">Detail lighting, materials, and references for reproducible renders.</p>
+          </div>
+          <div>
+            <label for="negative_prompt">Negative prompt (optional)</label>
+            <textarea id="negative_prompt" name="negative_prompt"
+              placeholder="artifacts, blurry, watermark..."></textarea>
+          </div>
+          <div>
+            <label>Dimensions</label>
+            <div class="grid-2">
+              <div>
+                <input id="width" name="width" type="number" min="256" max="1024" step="32" value="512"
+                  aria-label="Width" />
+                <p class="helper">px width</p>
+              </div>
+              <div>
+                <input id="height" name="height" type="number" min="256" max="1024" step="32" value="512"
+                  aria-label="Height" />
+                <p class="helper">px height</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label>Sampling</label>
+            <div class="grid-3">
+              <div>
+                <input id="steps" name="steps" type="number" min="4" max="50" value="28" aria-label="Steps" />
+                <p class="helper">More steps → finer detail.</p>
+              </div>
+              <div>
+                <input id="guidance" name="guidance" type="number" min="0" max="15" step="0.1" value="3.5"
+                  aria-label="Guidance" />
+                <p class="helper">Higher → more literal.</p>
+              </div>
+              <div>
+                <input id="seed" name="seed" type="number" min="0" placeholder="random" aria-label="Seed" />
+                <p class="helper">Optional reproducibility.</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="controlnet">ControlNet preset</label>
+            <select id="controlnet" name="controlnet">
+              <option value="">None</option>
+              {% for preset in controlnet_presets %}
+              <option value="{{ preset }}">{{ preset.title() }}</option>
+              {% endfor %}
+            </select>
+            <p class="helper">Pair prompts with structure such as canny edges or depth.</p>
+          </div>
+          <div id="controlnet-upload" style="display: none">
+            <label for="controlnet-image">Control image</label>
+            <input id="controlnet-image" type="file" accept="image/*" />
+            <p class="helper">Upload a reference matching your composition.</p>
+          </div>
+          <button id="generate-btn" class="primary-btn" type="submit">Generate image</button>
+        </form>
+      </section>
 
-    <script>
-      const presetSelect = document.getElementById("controlnet");
-      const uploadField = document.getElementById("controlnet-upload");
-      const fileInput = document.getElementById("controlnet-image");
-      const statusChip = document.getElementById("status");
-      const loader = document.getElementById("loader");
-      const resultImage = document.getElementById("result-image");
-      const placeholderText = document.getElementById("placeholder-text");
-      const metadataEl = document.getElementById("metadata");
-      const historyGrid = document.getElementById("history-grid");
-      const history = [];
-      let currentIndex = -1;
-      let historyCollapsed = false;
+      <section class="panel results-panel">
+        <div class="results-header">
+          <h2>Results</h2>
+          <div class="status-chip" id="status" data-state="idle">Idle</div>
+        </div>
+        <div class="result-card">
+          <div class="result-figure">
+            <img id="result-image" alt="Generated result" />
+            <div class="placeholder" id="placeholder-text">
+              Awaiting your first render. Submit a prompt to begin documenting observations.
+            </div>
+            <div class="loader" id="loader">
+              <span></span>
+              <span></span>
+              <span></span>
+              <small>Generating image…</small>
+            </div>
+          </div>
+          <div class="metadata" id="metadata"></div>
+        </div>
 
-      presetSelect.addEventListener("change", () => {
-        const enabled = presetSelect.value !== "";
-        uploadField.style.display = enabled ? "block" : "none";
-        fileInput.required = enabled;
-        if (!enabled) {
-          fileInput.value = "";
-        }
-      });
+        <div class="history">
+          <button class="history-toggle-btn" id="history-toggle" type="button">
+            <span style="font-weight:600;color:var(--text);font-size:1rem;">History</span>
+            <span id="history-arrow" aria-hidden="true">▾</span>
+          </button>
+          <div class="history-grid" id="history-grid" data-collapsed="false"></div>
+        </div>
+      </section>
+    </div>
+  </main>
 
-      function setStatus(message, state = "idle") {
-        statusChip.textContent = message;
-        statusChip.dataset.state = state;
+  <aside class="notes-drawer" id="notes-drawer">
+    <h3>Note</h3>
+    <p class="helper">Use these heuristics to keep experiments reproducible.</p>
+    <ul>
+      <li>Steps: more steps produce sharper images but take longer.</li>
+      <li>Guidance scale: higher values adhere closely to text; lower values allow abstraction.</li>
+      <li>ControlNet: combine prompts with canny or depth priors for structural fidelity.</li>
+      <li>Seeds: capture seeds in notes for deterministic reruns.</li>
+    </ul>
+    <button class="primary-btn" type="button" id="notes-close">Close notes</button>
+  </aside>
+  <div class="notes-overlay" id="notes-overlay"></div>
+
+  <script>
+    const presetSelect = document.getElementById("controlnet");
+    const uploadField = document.getElementById("controlnet-upload");
+    const fileInput = document.getElementById("controlnet-image");
+    const statusChip = document.getElementById("status");
+    const loader = document.getElementById("loader");
+    const resultImage = document.getElementById("result-image");
+    const placeholderText = document.getElementById("placeholder-text");
+    const metadataEl = document.getElementById("metadata");
+    const historyGrid = document.getElementById("history-grid");
+    const history = [];
+    let currentIndex = -1;
+    let historyCollapsed = false;
+
+    presetSelect.addEventListener("change", () => {
+      const enabled = presetSelect.value !== "";
+      uploadField.style.display = enabled ? "block" : "none";
+      fileInput.required = enabled;
+      if (!enabled) {
+        fileInput.value = "";
       }
+    });
 
-      function showLoader(show) {
-        loader.style.display = show ? "flex" : "none";
+    function setStatus(message, state = "idle") {
+      statusChip.textContent = message;
+      statusChip.dataset.state = state;
+    }
+
+    function showLoader(show) {
+      loader.style.display = show ? "flex" : "none";
+    }
+
+    function renderMetadata(meta) {
+      if (!meta) {
+        metadataEl.innerHTML = "";
+        return;
       }
-
-      function renderMetadata(meta) {
-        if (!meta) {
-          metadataEl.innerHTML = "";
-          return;
-        }
-        const entries = [
-          ["Prompt", meta.prompt || ""],
-          ["Dimensions", `${meta.width} × ${meta.height}`],
-          ["Steps", meta.num_inference_steps],
-          ["Guidance", meta.guidance_scale],
-          ["Seed", meta.seed ?? "—"],
-          ["ControlNet", meta.controlnet || "None"],
-          ["Timestamp", meta.timestamp || ""],
-        ];
-        metadataEl.innerHTML = entries
-          .map(
-            ([label, value]) => `
+      const entries = [
+        ["Prompt", meta.prompt || ""],
+        ["Dimensions", `${meta.width} × ${meta.height}`],
+        ["Steps", meta.num_inference_steps],
+        ["Guidance", meta.guidance_scale],
+        ["Seed", meta.seed ?? "—"],
+        ["ControlNet", meta.controlnet || "None"],
+        ["Timestamp", meta.timestamp || ""],
+      ];
+      metadataEl.innerHTML = entries
+        .map(
+          ([label, value]) => `
             <div>
               <span>${label}</span>
               <strong>${typeof value === "string" ? value : String(value)}</strong>
             </div>`
-          )
-          .join("");
-      }
+        )
+        .join("");
+    }
 
-      function truncate(text, length = 140) {
-        if (!text) return "";
-        return text.length > length ? text.slice(0, length).trim() + "…" : text;
-      }
+    function truncate(text, length = 140) {
+      if (!text) return "";
+      return text.length > length ? text.slice(0, length).trim() + "…" : text;
+    }
 
-      function updateHistory() {
-        historyGrid.innerHTML = history
-          .map(
-            (entry, index) => `
+    function updateHistory() {
+      historyGrid.innerHTML = history
+        .map(
+          (entry, index) => `
           <button class="history-item ${index === currentIndex ? "active" : ""}" data-index="${index}" title="${entry.prompt.replace(/"/g, "&quot;")}">
             <img src="${entry.image}" alt="History ${index + 1}" />
           </button>`
-          )
-          .join("");
-        historyGrid.dataset.collapsed = String(historyCollapsed);
-        document.getElementById("history-arrow").textContent = historyCollapsed ? "▸" : "▾";
-      }
+        )
+        .join("");
+      historyGrid.dataset.collapsed = String(historyCollapsed);
+      document.getElementById("history-arrow").textContent = historyCollapsed ? "▸" : "▾";
+    }
 
-      historyGrid.addEventListener("click", (event) => {
-        const button = event.target.closest(".history-item");
-        if (!button) return;
-        const index = Number(button.dataset.index);
-        const entry = history[index];
-        if (!entry) return;
-        currentIndex = index;
+    historyGrid.addEventListener("click", (event) => {
+      const button = event.target.closest(".history-item");
+      if (!button) return;
+      const index = Number(button.dataset.index);
+      const entry = history[index];
+      if (!entry) return;
+      currentIndex = index;
+      displayResult(entry);
+      updateHistory();
+    });
+
+    document.getElementById("history-toggle").addEventListener("click", () => {
+      historyCollapsed = !historyCollapsed;
+      historyGrid.dataset.collapsed = String(historyCollapsed);
+      document.getElementById("history-arrow").textContent = historyCollapsed ? "▸" : "▾";
+    });
+
+    function displayResult(entry) {
+      resultImage.src = entry.image;
+      resultImage.style.display = "block";
+      placeholderText.style.display = "none";
+      renderMetadata(entry.metadata);
+    }
+
+    async function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result || "";
+          const commaIndex = result.indexOf(",");
+          resolve(commaIndex >= 0 ? result.slice(commaIndex + 1) : result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById("generate-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const submitBtn = document.getElementById("generate-btn");
+      submitBtn.disabled = true;
+      setStatus("Generating…", "busy");
+      showLoader(true);
+
+      try {
+        const payload = {
+          prompt: form.prompt.value.trim(),
+          negative_prompt: form.negative_prompt.value.trim() || undefined,
+          width: parseInt(form.width.value, 10),
+          height: parseInt(form.height.value, 10),
+          num_inference_steps: parseInt(form.steps.value, 10),
+          guidance_scale: parseFloat(form.guidance.value),
+          seed: form.seed.value ? Number(form.seed.value) : undefined,
+        };
+
+        const preset = presetSelect.value;
+        if (preset) {
+          if (fileInput.files.length === 0) {
+            throw new Error("Please provide a control image for the selected preset.");
+          }
+          payload.controlnet = {
+            preset,
+            image: await fileToBase64(fileInput.files[0]),
+          };
+        }
+
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error || "Generation failed");
+        }
+
+        const entry = {
+          image: result.image,
+          prompt: truncate(payload.prompt),
+          metadata: {
+            ...result.metadata,
+            prompt: truncate(payload.prompt, 180),
+            num_inference_steps: payload.num_inference_steps,
+            guidance_scale: payload.guidance_scale,
+            seed: payload.seed,
+            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          },
+        };
+        history.unshift(entry);
+        currentIndex = 0;
         displayResult(entry);
         updateHistory();
-      });
-
-      document.getElementById("history-toggle").addEventListener("click", () => {
-        historyCollapsed = !historyCollapsed;
-        historyGrid.dataset.collapsed = String(historyCollapsed);
-        document.getElementById("history-arrow").textContent = historyCollapsed ? "▸" : "▾";
-      });
-
-      function displayResult(entry) {
-        resultImage.src = entry.image;
-        resultImage.style.display = "block";
-        placeholderText.style.display = "none";
-        renderMetadata(entry.metadata);
+        setStatus("Complete", "ready");
+      } catch (error) {
+        console.error(error);
+        setStatus(error.message || "Unable to generate image", "error");
+        alert(error.message || "Unable to generate image");
+      } finally {
+        submitBtn.disabled = false;
+        showLoader(false);
       }
+    });
 
-      async function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const result = reader.result || "";
-            const commaIndex = result.indexOf(",");
-            resolve(commaIndex >= 0 ? result.slice(commaIndex + 1) : result);
-          };
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-      }
+    // Notes drawer
+    const notesToggle = document.getElementById("notes-toggle");
+    const notesDrawer = document.getElementById("notes-drawer");
+    const notesOverlay = document.getElementById("notes-overlay");
+    const notesClose = document.getElementById("notes-close");
 
-      document.getElementById("generate-form").addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        const submitBtn = document.getElementById("generate-btn");
-        submitBtn.disabled = true;
-        setStatus("Generating…", "busy");
-        showLoader(true);
+    function toggleNotes(open) {
+      const shouldOpen = open ?? !notesDrawer.classList.contains("open");
+      notesDrawer.classList.toggle("open", shouldOpen);
+      notesOverlay.classList.toggle("open", shouldOpen);
+    }
 
-        try {
-          const payload = {
-            prompt: form.prompt.value.trim(),
-            negative_prompt: form.negative_prompt.value.trim() || undefined,
-            width: parseInt(form.width.value, 10),
-            height: parseInt(form.height.value, 10),
-            num_inference_steps: parseInt(form.steps.value, 10),
-            guidance_scale: parseFloat(form.guidance.value),
-            seed: form.seed.value ? Number(form.seed.value) : undefined,
-          };
+    notesToggle.addEventListener("click", () => toggleNotes(true));
+    notesClose.addEventListener("click", () => toggleNotes(false));
+    notesOverlay.addEventListener("click", () => toggleNotes(false));
+  </script>
+</body>
 
-          const preset = presetSelect.value;
-          if (preset) {
-            if (fileInput.files.length === 0) {
-              throw new Error("Please provide a control image for the selected preset.");
-            }
-            payload.controlnet = {
-              preset,
-              image: await fileToBase64(fileInput.files[0]),
-            };
-          }
-
-          const response = await fetch("/api/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          });
-          const result = await response.json();
-          if (!response.ok) {
-            throw new Error(result.error || "Generation failed");
-          }
-
-          const entry = {
-            image: result.image,
-            prompt: truncate(payload.prompt),
-            metadata: {
-              ...result.metadata,
-              prompt: truncate(payload.prompt, 180),
-              num_inference_steps: payload.num_inference_steps,
-              guidance_scale: payload.guidance_scale,
-              seed: payload.seed,
-              timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            },
-          };
-          history.unshift(entry);
-          currentIndex = 0;
-          displayResult(entry);
-          updateHistory();
-          setStatus("Complete", "ready");
-        } catch (error) {
-          console.error(error);
-          setStatus(error.message || "Unable to generate image", "error");
-          alert(error.message || "Unable to generate image");
-        } finally {
-          submitBtn.disabled = false;
-          showLoader(false);
-        }
-      });
-
-      // Notes drawer
-      const notesToggle = document.getElementById("notes-toggle");
-      const notesDrawer = document.getElementById("notes-drawer");
-      const notesOverlay = document.getElementById("notes-overlay");
-      const notesClose = document.getElementById("notes-close");
-
-      function toggleNotes(open) {
-        const shouldOpen = open ?? !notesDrawer.classList.contains("open");
-        notesDrawer.classList.toggle("open", shouldOpen);
-        notesOverlay.classList.toggle("open", shouldOpen);
-      }
-
-      notesToggle.addEventListener("click", () => toggleNotes(true));
-      notesClose.addEventListener("click", () => toggleNotes(false));
-      notesOverlay.addEventListener("click", () => toggleNotes(false));
-    </script>
-  </body>
 </html>
