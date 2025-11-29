@@ -1,0 +1,90 @@
+# OS / Editor cruft
+.DS_Store
+Thumbs.db
+._*
+*.swp
+*.swo
+
+# Python bytecode / extensions
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.dylib
+*.pyd
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+pip-wheel-metadata/
+.installed.cfg
+
+# Virtual environments
+.env
+.venv/
+env/
+venv/
+ENV/
+.python-version
+
+# Notebooks / interactive sessions
+.ipynb_checkpoints/
+.jupyter/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.nox/
+.tox/
+.coverage
+coverage.xml
+htmlcov/
+
+# IDE / project files
+.idea/
+.vscode/
+.history/
+
+# Logs and temp files
+logs/
+*.log
+*.out
+*.err
+tmp/
+temp/
+*.tmp
+
+# Diffusion training artifacts
+checkpoints/
+runs/
+outputs/
+artifacts/
+samples/
+wandb/
+tensorboard/
+tb_logs/
+mlruns/
+*.ckpt
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.npz
+*.npy
+*.onnx
+
+# Data / downloaded assets
+data/
+datasets/
+download/
+cache/
+.cache/
+.huggingface/
+transformers_cache/
+diffusers_cache/
+hf_cache/
+
