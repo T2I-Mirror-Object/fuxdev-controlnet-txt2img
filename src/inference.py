@@ -64,6 +64,20 @@ class FluxGenerator:
         self._text2img_pipe: Optional[DiffusionPipeline] = None
         self._control_pipes: Dict[str, FluxControlNetPipeline] = {}
 
+    def _prepare_pipeline(self, pipe: DiffusionPipeline) -> DiffusionPipeline:
+        """Move a pipeline to the requested device with graceful CUDA fallback."""
+
+        pipe.set_progress_bar_config(disable=True)
+        if self.device == "cuda" and torch.cuda.is_available():
+            try:
+                pipe.to(self.device)
+            except torch.cuda.OutOfMemoryError:
+                pipe.to("cpu")
+                pipe.enable_sequential_cpu_offload()
+        else:
+            pipe.to(self.device)
+        return pipe
+
     def _load_text2img_pipe(self) -> DiffusionPipeline:
         if self._text2img_pipe is None:
             pipe = DiffusionPipeline.from_pretrained(
@@ -71,9 +85,7 @@ class FluxGenerator:
                 torch_dtype=self.torch_dtype,
                 cache_dir=str(HF_CACHE),
             )
-            pipe.to(self.device)
-            pipe.set_progress_bar_config(disable=True)
-            self._text2img_pipe = pipe
+            self._text2img_pipe = self._prepare_pipeline(pipe)
         return self._text2img_pipe
 
     def _load_controlnet_pipe(self, preset: str) -> FluxControlNetPipeline:
@@ -93,9 +105,7 @@ class FluxGenerator:
                 torch_dtype=self.torch_dtype,
                 cache_dir=str(HF_CACHE),
             )
-            pipe.to(self.device)
-            pipe.set_progress_bar_config(disable=True)
-            self._control_pipes[preset] = pipe
+            self._control_pipes[preset] = self._prepare_pipeline(pipe)
         return self._control_pipes[preset]
 
     def generate(
