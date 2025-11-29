@@ -3,10 +3,33 @@ import datetime
 import argparse
 import torch
 from diffusers import FluxPipeline
+from pathlib import Path
 
-# 1. Set cache directories (Must be done before importing diffusers internals)
-os.environ["HF_HOME"] = os.path.join("download", "hf-cache")
-os.environ["TORCH_HOME"] = os.path.join("download", "torch-cache")
+PROJECT_ROOT = Path(__file__).resolve().parents[0]
+DOWNLOAD_ROOT = PROJECT_ROOT / "download"
+HF_CACHE = DOWNLOAD_ROOT / "hf-cache"
+TORCH_CACHE = DOWNLOAD_ROOT / "torch-cache"
+
+
+def _ensure_cache_dirs() -> None:
+    HF_CACHE.mkdir(parents=True, exist_ok=True)
+    TORCH_CACHE.mkdir(parents=True, exist_ok=True)
+
+
+def _configure_cache_env() -> None:
+    _ensure_cache_dirs()
+    env_map = {
+        "HF_HOME": HF_CACHE,
+        "HUGGINGFACE_HUB_CACHE": HF_CACHE,
+        "TRANSFORMERS_CACHE": HF_CACHE,
+        "DIFFUSERS_CACHE": HF_CACHE,
+        "TORCH_HOME": TORCH_CACHE,
+    }
+    for key, value in env_map.items():
+        os.environ.setdefault(key, str(value))
+
+
+_configure_cache_env()
 
 # 2. Parse Command Line Arguments
 parser = argparse.ArgumentParser(description="Generate images with FLUX.1")
