@@ -43,7 +43,6 @@ def load_prompts_from_csv(csv_path):
 print("Loading prompts from: prompts.csv")
 prompts = load_prompts_from_csv("prompts.csv")
 print(f"Loaded {len(prompts)} prompts\n")
-print(prompts[1:])
 
 # Load Pipeline
 print(f"Loading FLUX.1-dev... (Cache: download/)")
@@ -63,7 +62,7 @@ print(f"\n{'='*60}")
 print(f"Starting generation for {len(prompts)} prompts")
 print(f"{'='*60}\n")
 
-for idx, prompt in enumerate(prompts[:3], 1):
+for idx, prompt in enumerate(prompts[1:], 1):
     print(f"[{idx}/{len(prompts)}] Generating: '{prompt[:60]}{'...' if len(prompt) > 60 else ''}'")
 
     try:
