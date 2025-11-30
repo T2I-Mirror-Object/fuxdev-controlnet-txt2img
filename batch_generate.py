@@ -32,15 +32,8 @@ import csv
 
 
 def load_prompts_from_csv(csv_path):
-    """Load prompts from a CSV file with 'prompt' column."""
-    prompts = []
-    with open(csv_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f, delimiter='\n')
-        for row in reader:
-            if 'prompt' in row:
-                prompts.append(row['prompt'].strip())
-    return prompts
-
+    with open(csv_path, "r", encoding="utf-8") as f:
+        return [line.strip() for line in f if line.strip()]
 
 # # Check for CUDA
 # if not torch.cuda.is_available():
@@ -50,7 +43,7 @@ def load_prompts_from_csv(csv_path):
 print("Loading prompts from: prompts.csv")
 prompts = load_prompts_from_csv("prompts.csv")
 print(f"Loaded {len(prompts)} prompts\n")
-print(prompts[:3])
+print(prompts[1:])
 
 # # Load Pipeline
 # print(f"Loading FLUX.1-dev... (Cache: download/)")
