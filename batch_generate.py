@@ -72,7 +72,7 @@ for idx, prompt in enumerate(prompts[1:], 1):
             height=1024,
             width=1024,
             guidance_scale=3.5,
-            num_inference_steps=50,
+            num_inference_steps=30,
             max_sequence_length=512,
             generator=torch.Generator("cpu").manual_seed(idx)
         ).images[0]
