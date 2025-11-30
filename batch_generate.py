@@ -69,7 +69,7 @@ print(f"\n{'='*60}")
 print(f"Starting generation for {len(prompts)} prompts")
 print(f"{'='*60}\n")
 
-for idx, prompt in enumerate(prompts, 1):
+for idx, prompt in enumerate(prompts[:3], 1):
     print(f"[{idx}/{len(prompts)}] Generating: '{prompt[:60]}{'...' if len(prompt) > 60 else ''}'")
 
     try:
