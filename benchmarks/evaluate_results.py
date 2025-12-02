@@ -41,11 +41,10 @@ class ResultsEvaluator:
         """
         prompts = {}
         with open(csv_path, 'r', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            next(reader)  # Skip header
+            reader = csv.DictReader(f)
             for idx, row in enumerate(reader, 1):
-                if row:  # Skip empty rows
-                    prompts[idx] = row[0].strip()
+                if 'prompt' in row and row['prompt'].strip():
+                    prompts[idx] = row['prompt'].strip()
         return prompts
 
     def calculate_clip_score(self, image_path: str, text: str) -> float:
