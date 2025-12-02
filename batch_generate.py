@@ -32,19 +32,12 @@ _configure_cache_env()
 
 
 def load_prompts_from_csv(csv_path):
-    """Load prompts from a CSV file with 'prompt' column."""
-    prompts = []
-    with open(csv_path, 'r', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if 'prompt' in row:
-                prompts.append(row['prompt'].strip())
-    return prompts
+    with open(csv_path, "r", encoding="utf-8") as f:
+        return [line.strip() for line in f if line.strip()]
 
-
-# Check for CUDA
-if not torch.cuda.is_available():
-    print("Warning: CUDA is not available. Running on CPU will be extremely slow.")
+# # Check for CUDA
+# if not torch.cuda.is_available():
+#     print("Warning: CUDA is not available. Running on CPU will be extremely slow.")
 
 # Load prompts from CSV
 print("Loading prompts from: prompts.csv")
@@ -69,7 +62,7 @@ print(f"\n{'='*60}")
 print(f"Starting generation for {len(prompts)} prompts")
 print(f"{'='*60}\n")
 
-for idx, prompt in enumerate(prompts, 1):
+for idx, prompt in enumerate(prompts[1:], 1):
     print(f"[{idx}/{len(prompts)}] Generating: '{prompt[:60]}{'...' if len(prompt) > 60 else ''}'")
 
     try:
@@ -79,7 +72,7 @@ for idx, prompt in enumerate(prompts, 1):
             height=1024,
             width=1024,
             guidance_scale=3.5,
-            num_inference_steps=50,
+            num_inference_steps=30,
             max_sequence_length=512,
             generator=torch.Generator("cpu").manual_seed(idx)
         ).images[0]
